@@ -10,7 +10,7 @@ services:
     build:
         dockerfile: ./flask/Dockerfile
     volumes:
-      - ./flask:/flask
+      - ./flask:/app
   db:
       image: mysql:latest
       volumes: 

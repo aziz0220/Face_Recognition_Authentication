@@ -74,4 +74,4 @@ COPY . .
 EXPOSE 8000
 
 # Run the application.
-CMD python flask/app.py
+CMD python app.py

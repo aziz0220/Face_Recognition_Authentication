@@ -1,218 +1,264 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Webcam Stream</title>
-    <style>
-        img {
-            max-width: 500px;
-            max-height: 500px;
-        }
-    </style>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Daleelteq - Face Authentification System</title>
+    <link rel="stylesheet" href="https://unicons.iconscout.com/release/v4.0.0/css/line.css" />
+    <script src="https://code.iconify.design/iconify-icon/1.0.7/iconify-icon.min.js"></script>
+    <link rel="stylesheet" href="../static/style.css" />
+    <link rel="stylesheet" type="text/css" href="../static/fonts/material-design-iconic-font/css/material-design-iconic-font.min.css">
+
 </head>
 <body>
-    <h1>Face Authentification APP</h1>
-    <div id="login-form">
-        <h2>Login</h2>
-        <form action="/login" method="POST">
-            <label for="login-username">Username:</label>
-            <input type="text" id="login-username" name="username" required><br>
-            <label for="login-password">Password:</label>
-            <input type="password" id="login-password" name="password" required><br>
-            <button type="submit">Sign In</button>
-        </form>
-    </div>
+    <header class="header">
+        <nav class="nav">
+            <a href="#" class="nav_logo">Daleelteq</a>
+            <ul class="nav_items">
+            <li class="nav_item">
+                <a href="#" class="nav_link">Home</a>
+                <a href="#" class="nav_link">Product</a>
+                <a href="#" class="nav_link">Services</a>
+                <a href="#" class="nav_link">Contact</a>
+            </li>
+            </ul>
+            <button class="button" id="form-open">Login</button>
+            <button class="Regbutton" id="reg-open">Register</button>
+        </nav>
+    </header>
 
 
-    <div id="face_authentification">
-        <h2>Facial Authentification</h2>
-        <form action="/auth">
-        <div id="webcam-container">
-            <img id="video-stream-1" src=""><br>
-            <button id="webcam-button-1" type="button" onclick="openWebcam()">Open/Close Webcam</button>
-            <button id="capture-button-1" type="button" onclick="AnalyseShot()" disabled>Take A Shot</button>
-            <button id="delete-button-1" type="button" onclick="resetShot()" disabled>Delete Pic</button>
-        </div><br>
-        <button id="auth-button" type="submit" disabled>Log-In</button>
-        </form>
-    </div>
+    <section class="section1">
+
+        <div class="form_container">
 
 
-    <div id="register-form">
-        <h2>Register</h2>
-        <form method="POST" action="/register" enctype="multipart/form-data">
-            <label for="register-username">Username:</label>
-            <input type="text" id="register-username" name="username" required><br>
-            <label for="register-password">Password:</label>
-            <input type="password" id="register-password" name="password" required><br>
-            <div id="webcam-container">
-                <img id="video-stream" src=""><br>
-                <button id="webcam-button" type="button" onclick="toggleWebcam()">Open/Close Webcam</button>
-                <button id="capture-button" type="button" onclick="captureShot()" disabled>Take A Shot</button>
-                <button id="save-button" type="button" onclick="saveShot()" disabled>Save Shot</button>
-                <button id="delete-button" type="button" onclick="deleteShot()" disabled>Delete Pic</button>
+            <i class="uil uil-times form_close1"></i>
+            <!-- Login Form -->
+            <div class="form login_form">
+                <form action="/login" method="POST">
+                    <h2>Login</h2>
+                    <div class="input_box">
+                        <i class="uil uil-user"></i>
+                        <input type="email" id="login-username" name="username" placeholder="Enter your Username" required />
+                    </div>
+                    <div class="input_box">
+                        <input type="password" id="login-password" name="password"  placeholder="Enter your password" required />
+                        <i class="uil uil-lock password"></i>
+                        <i class="uil uil-eye-slash pw_hide"></i>
+                    </div>
+                    <div class="option_field">
+                        <span class="checkbox">
+                            <input type="checkbox" id="check" />
+                            <label for="check">Remember me</label>
+                        </span>
+                        <a href="#" class="forgot_pw">Forgot password?</a>
+                    </div>
+                    <button class="button" type="submit">Login Now</button>
+                    <div class="login_signup">Face Authentification <a href="#" id="signup">Click HERE</a></div>
+                </form>
             </div>
-            <button type="submit" >Register</button>
-        </form>
-    </div>
-
-    <script>
-
-        let video;
-        let captureButton;
-        let saveButton;
-        let deleteButton;
-        let isWebcamOpen = false;
-        let isCaptured = false;
-        let video1;
-        let captureButton1;
-        let authButton;
-        let deleteButton1;
-        let isWebcamOpen1 = false;
-        let isCaptured1 = false;
 
 
-        function toggleWebcam() {
-            video = document.getElementById('video-stream');
-            captureButton = document.getElementById('capture-button');
-            saveButton = document.getElementById('save-button');
-            deleteButton = document.getElementById('delete-button');
+            <!-- Face Auth form -->
+            <div class="form face_form">
+                <form action="/auth">
+                    <h2>Facial Authentification</h2>
 
-            if (isWebcamOpen) {
-                video.src = '';
-                captureButton.disabled = true;
-                saveButton.disabled = true;
-                deleteButton.disabled = true;
-                captureButton.innerHTML = 'Take A Shot';
-                isWebcamOpen = false;
-                isCaptured = false;
-            } else {
-                video.src = '/video_feed';
-                captureButton.disabled = false;
-                captureButton.innerHTML = 'Take A Shot';
-                saveButton.disabled = true;
-                deleteButton.disabled = true;
-                isWebcamOpen = true;
-                isCaptured = false;
-            }
-        }
+                    <button class="button" id="webcam-button-1" type="button" onclick="openWebcam()">Open Webcam</button>
+                    <button class="button" id="auth-button" type="submit" disabled>Log-In</button>
 
+                    <div class="login_signup">Encountering issues? <a href="#" id="login1">Login</a></div>
 
-        function openWebcam() {
-            video1 = document.getElementById('video-stream-1');
-            captureButton1 = document.getElementById('capture-button-1');
-            deleteButton1 = document.getElementById('delete-button-1');
-            authButton=document.getElementById('auth-button');
-            if (isWebcamOpen1) {
-                video1.src = '';
-                captureButton1.disabled = true;
-                deleteButton1.disabled = true;
-                isWebcamOpen1 = false;
-                isCaptured1 = false;
-            } else {
-                video1.src = '/video_feed';
-                captureButton1.disabled = false;
-                deleteButton1.disabled = true;
-                isWebcamOpen1 = true;
-                isCaptured1 = false;
-            }
-        }
+                </form>     
+            </div>
+            <div class="login_signup">Don't have an account? <a href="#" id="register">Register</a></div>
+        </div>
+
+            <!-- Camera Container -->
+        <div class="webcam_container deactivate" >
+            <div class="form camera-controlls" >    
+                <div id="message-container" style="display: none;">
+    
+                </div>    
+                <i class="uil uil-times cam_close" onclick="openWebcam()"></i>
+                <div class="face-guideline">
+                    <img src="../static/face_limit.png" alt="Face Guideline" class="face-image">
+                </div>
+                <img id="video-stream-1" src="">
+                <button class="button" id="capture-button-1" type="button" onclick="AnalyseShot()" disabled>Take A Shot</button>
+                <button class="button" id="delete-button-1" type="button" onclick="resetShot()" disabled>Delete Pic</button>
+            </div>
+        </div>
 
 
-        function captureShot() {
-            if (isWebcamOpen && !isCaptured) {
-                saveButton.disabled = false;
-                deleteButton.disabled = false;
-                isCaptured = true;
-            }
-        }
-        
+        <!-- Register Form -->
+        <div class="form_container1">
+            <div class="form register_form">
+                <div class="form-v1-content"> 
+                    <div class="wizard-form"><i class="uil uil-times form_close2"></i>
+                        <form  method="POST" action="/register" enctype="multipart/form-data" class="form-register" >
+                            <div id="form-total">
+                                <!-- SECTION 1 -->
+                                <h2>
+                                    <p class="step-icon"><span><i class="uil uil-user-exclamation"></i></span></p>
+                                    <span class="step-text">Peronal Infomation</span>
+                                </h2>
 
-        function saveShot() {
-            fetch('/save_shot')
-                .then(response => {
-                    if (response.ok) {
-                        return response.text();
-                    } else {
-                        throw new Error('Failed to save image.');
-                    }
-                })
-                .then(message => {
-                    console.log(message);
-                    toggleWebcam();
-                })
-                .catch(error => {
-                    console.error('Error saving image:', error);
-                });
-          }
-          
-          
-        function deleteShot() {
-            fetch('/delete')
-                .then(response => {
-                    if (response.ok) {
-                        return response.text();
-                    } else {
-                        throw new Error('Failed to delete image.');
-                    }
-                })
-                .then(message => {
-                    console.log(message);
-                    toggleWebcam();
-                })
-                .catch(error => {
-                    console.error('Error deleting image:', error);
-                });
-        }
+                                <section>
+                                    <div class="inner">
+                                        <div class="wizard-header">
+                                            <h3 class="heading">Peronal Infomation</h3>
+                                            <p>Please enter your infomation and proceed to the next step so we can build your account.  </p>
+                                        </div>
+                                        <div class="form-row">
+                                            <div class="form-holder">
+                                                <fieldset>
+                                                    <legend>First Name</legend>
+                                                    <input type="text" class="form-control" id="first-name" name="first-name" placeholder="First Name" required>
+                                                </fieldset>
+                                            </div>
+                                            <div class="form-holder">
+                                                <fieldset>
+                                                    <legend>Last Name</legend>
+                                                    <input type="text" class="form-control" id="last-name" name="last-name" placeholder="Last Name" required>
+                                                </fieldset>
+                                            </div>
+                                        </div>
+                                        <div class="form-row">
+                                            <div class="form-holder form-holder-2">
+                                                <fieldset>
+                                                    <legend>Your Email</legend>
+                                                    <input type="text" name="your_email" id="your_email" class="form-control" pattern="[^@]+@[^@]+.[a-zA-Z]{2,6}" placeholder="example@email.com" required>
+                                                </fieldset>
+                                            </div>
+                                        </div>
+                                        <div class="form-row">
+                                            <div class="form-holder form-holder-2">
+                                                <fieldset>
+                                                    <legend>Phone Number</legend>
+                                                    <input type="text" class="form-control" id="phone" name="phone" placeholder="+1 888-999-7777" required>
+                                                </fieldset>
+                                            </div>
+                                        </div>
+                                        <div class="form-row form-row-date">
+                                            <div class="form-holder form-holder-2">
+                                                <label class="special-label">Birth Date:</label>
+                                                <select name="month" id="month">
+                                                    <option value="MM" disabled selected>MM</option>
+                                                    <option value="16">16</option>
+                                                    <option value="17">17</option>
+                                                    <option value="18">18</option>
+                                                    <option value="19">19</option>
+                                                </select>
+                                                <select name="date" id="date">
+                                                    <option value="DD" disabled selected>DD</option>
+                                                    <option value="Feb">Feb</option>
+                                                    <option value="Mar">Mar</option>
+                                                    <option value="Apr">Apr</option>
+                                                    <option value="May">May</option>
+                                                </select>
+                                                <select name="year" id="year">
+                                                    <option value="YYYY" disabled selected>YYYY</option>
+                                                    <option value="2017">2017</option>
+                                                    <option value="2016">2016</option>
+                                                    <option value="2015">2015</option>
+                                                    <option value="2014">2014</option>
+                                                    <option value="2013">2013</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="form-row">
+                                            <div class="form-holder form-holder-2">
+                                                <input type="text" class="form-control input-border" id="ssn" name="ssn" placeholder="SSN" required>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </section>
+                                <!-- SECTION 2 -->
+                                <h2>
+                                    <p class="step-icon"><span><i class="uil uil-user-square"></i></span></p>
+                                    <span class="step-text">Your Account</span>
+                                </h2>
+                                <section>
+                                    <div class="inner">
+                                        <div class="wizard-header">
+                                            <h3 class="heading">Account Settings</h3>
+                                            <p>Please enter your username and desired password and choose if you want to proceed with face recognition authentification.</p>
+                                        </div>
+                                        <div class="form-row">
+                                            <div class="form-holder form-holder-2">
+                                                <fieldset>
+                                                    <legend>Your Username</legend>
+                                                    <input type="text" name="username" id="register-username" placeholder="Foulen456" class="form-control" required>
+                                                </fieldset>
+                                            </div>
+                                        </div>
+                                        <div class="form-row">
+                                            <div class="form-holder form-holder-2">
+                                                <fieldset>
+                                                    <legend>Password</legend>
+                                                    <input type="password" name="password" id="register-password" placeholder="Password" class="form-control" required>
+                                                </fieldset>
+                                            </div>
+                                        </div>
+                                        <div class="form-row">
+                                            <div class="form-holder form-holder-2">
+                                                <fieldset>
+                                                    <legend>Confirm password</legend>
+                                                    <input type="password" name="password" id="confirm-password" placeholder="Confirm Password" class="form-control" required>
+                                                </fieldset>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-row">
+                                        <div class="form-holder form-holder-2">
+                                            <fieldset>
+                                                <legend>Face Authentication</legend>
+                                                <label class="switch">
+                                                    <input type="checkbox" id="face-auth-toggle">
+                                                    <span class="slider round"></span>
+                                                </label>
+                                            </fieldset>
+                                        </div>
+                                    </div>             
+                                </section>
+                                <!-- SECTION 3 -->
+                                <h2>
+                                    <p class="step-icon"><span><i class="uil uil-head-side"></i></span></p>
+                                    <span class="step-text">Face recognition authentification</span>
+                                </h2>
+                                <section id="camera_section">
+                                    <div class="inner">
+                                        <div class="wizard-header">
+                                            <h3 class="heading">Face Recognition</h3>
+                                            <p>Please enter your infomation and proceed to the next step so we can build your account.</p>
+                                        </div>
+                                        <div id="message-container1" style="display: none;">
+                                        </div>  
+                                        <div class="face-guideline1">
+                                            <img src="../static/face_limit.png" alt="" class="face-image1">
+                                        </div>
+                                        <img id="video-stream" src=""><br>
+                                        <button class="button" id="capture-button" type="button" onclick="captureShot()">Take A Shot</button>
+                                        <button class="button" id="save-button" type="button" onclick="saveShot()" disabled>Save Shot</button>
+                                        <button class="button" id="delete-button" type="button" onclick="deleteShot()" disabled>Delete Pic</button>
+                                   
+                                </section>
+                            </div>
+                            <div class="login_signup">Already have an account? <a href="#" id="login">Login</a></div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
 
-
-        function AnalyseShot() {
-            if (isWebcamOpen1 && !isCaptured1) {
-                captureButton1.disabled = true;
-                deleteButton1.disabled = false;
-                authButton.disabled = false;
-                isCaptured1 = true;
-                fetch('/analyse_shot')
-                .then(response => {
-                    if (response.ok) {
-                        return response.text();
-                    } else {
-                        throw new Error('Failed to analyse image.');
-                    }
-                })
-                .then(message => {
-                    console.log(message);
-                    openWebcam();
-                })
-                .catch(error => {
-                    console.error('Error analysing image:', error);
-                });
-            }
-        }
-
-
-        function resetShot() {
-            if (isWebcamOpen1 && isCaptured1) {
-                captureButton1.disabled = false;
-                deleteButton1.disabled = true;
-                authButton.disabled = true;
-                isCaptured1 = false;
-            fetch('/reset')
-                .then(response => {
-                    if (response.ok) {
-                        return response.text();
-                    } else {
-                        throw new Error('Failed to reset image.');
-                    }
-                })
-                .then(message => {
-                    console.log(message);
-                    openWebcam();
-                })
-                .catch(error => {
-                    console.error('Error resetting image:', error);
-                });
-        }
-    }
-    </script>
+    <script src="../static/script.js"></script>    
+	<script src="../static/js/jquery-3.3.1.min.js"></script>
+	<script src="../static/js/jquery.steps.js"></script>
+    <script src="../static/js/main.js"></script>
 </body>
 </html>
