@@ -61,6 +61,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 # Leverage a cache mount to /root/.cache/pip to speed up subsequent builds.
 # Leverage a bind mount to requirements.txt to avoid having to copy them into
 # into this layer.
+RUN python -m pip install --upgrade pip
 RUN --mount=type=cache,target=/root/.cache/pip \
     --mount=type=bind,source=flask/requirements.txt,target=flask/requirements.txt \
     python -m pip install -r flask/requirements.txt
