@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Webcam Stream</title>
+    <style>
+        img {
+            max-width: 500px;
+            max-height: 500px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Face Authentification APP</h1>
+    <div id="login-form">
+        <h2>Login</h2>
+        <form action="/login" method="POST">
+            <label for="login-username">Username:</label>
+            <input type="text" id="login-username" name="username" required><br>
+            <label for="login-password">Password:</label>
+            <input type="password" id="login-password" name="password" required><br>
+            <button type="submit">Sign In</button>
+        </form>
+    </div>
+
+
+    <div id="face_authentification">
+        <h2>Facial Authentification</h2>
+        <form action="/auth">
+        <div id="webcam-container">
+            <img id="video-stream-1" src=""><br>
+            <button id="webcam-button-1" type="button" onclick="openWebcam()">Open/Close Webcam</button>
+            <button id="capture-button-1" type="button" onclick="AnalyseShot()" disabled>Take A Shot</button>
+            <button id="delete-button-1" type="button" onclick="resetShot()" disabled>Delete Pic</button>
+        </div><br>
+        <button id="auth-button" type="submit" disabled>Log-In</button>
+        </form>
+    </div>
+
+
+    <div id="register-form">
+        <h2>Register</h2>
+        <form method="POST" action="/register" enctype="multipart/form-data">
+            <label for="register-username">Username:</label>
+            <input type="text" id="register-username" name="username" required><br>
+            <label for="register-password">Password:</label>
+            <input type="password" id="register-password" name="password" required><br>
+            <div id="webcam-container">
+                <img id="video-stream" src=""><br>
+                <button id="webcam-button" type="button" onclick="toggleWebcam()">Open/Close Webcam</button>
+                <button id="capture-button" type="button" onclick="captureShot()" disabled>Take A Shot</button>
+                <button id="save-button" type="button" onclick="saveShot()" disabled>Save Shot</button>
+                <button id="delete-button" type="button" onclick="deleteShot()" disabled>Delete Pic</button>
+            </div>
+            <button type="submit" >Register</button>
+        </form>
+    </div>
+
+    <script>
+
+        let video;
+        let captureButton;
+        let saveButton;
+        let deleteButton;
+        let isWebcamOpen = false;
+        let isCaptured = false;
+        let video1;
+        let captureButton1;
+        let authButton;
+        let deleteButton1;
+        let isWebcamOpen1 = false;
+        let isCaptured1 = false;
+
+
+        function toggleWebcam() {
+            video = document.getElementById('video-stream');
+            captureButton = document.getElementById('capture-button');
+            saveButton = document.getElementById('save-button');
+            deleteButton = document.getElementById('delete-button');
+
+            if (isWebcamOpen) {
+                video.src = '';
+                captureButton.disabled = true;
+                saveButton.disabled = true;
+                deleteButton.disabled = true;
+                captureButton.innerHTML = 'Take A Shot';
+                isWebcamOpen = false;
+                isCaptured = false;
+            } else {
+                video.src = '/video_feed';
+                captureButton.disabled = false;
+                captureButton.innerHTML = 'Take A Shot';
+                saveButton.disabled = true;
+                deleteButton.disabled = true;
+                isWebcamOpen = true;
+                isCaptured = false;
+            }
+        }
+
+
+        function openWebcam() {
+            video1 = document.getElementById('video-stream-1');
+            captureButton1 = document.getElementById('capture-button-1');
+            deleteButton1 = document.getElementById('delete-button-1');
+            authButton=document.getElementById('auth-button');
+            if (isWebcamOpen1) {
+                video1.src = '';
+                captureButton1.disabled = true;
+                deleteButton1.disabled = true;
+                isWebcamOpen1 = false;
+                isCaptured1 = false;
+            } else {
+                video1.src = '/video_feed';
+                captureButton1.disabled = false;
+                deleteButton1.disabled = true;
+                isWebcamOpen1 = true;
+                isCaptured1 = false;
+            }
+        }
+
+
+        function captureShot() {
+            if (isWebcamOpen && !isCaptured) {
+                saveButton.disabled = false;
+                deleteButton.disabled = false;
+                isCaptured = true;
+            }
+        }
+        
+
+        function saveShot() {
+            fetch('/save_shot')
+                .then(response => {
+                    if (response.ok) {
+                        return response.text();
+                    } else {
+                        throw new Error('Failed to save image.');
+                    }
+                })
+                .then(message => {
+                    console.log(message);
+                    toggleWebcam();
+                })
+                .catch(error => {
+                    console.error('Error saving image:', error);
+                });
+          }
+          
+          
+        function deleteShot() {
+            fetch('/delete')
+                .then(response => {
+                    if (response.ok) {
+                        return response.text();
+                    } else {
+                        throw new Error('Failed to delete image.');
+                    }
+                })
+                .then(message => {
+                    console.log(message);
+                    toggleWebcam();
+                })
+                .catch(error => {
+                    console.error('Error deleting image:', error);
+                });
+        }
+
+
+        function AnalyseShot() {
+            if (isWebcamOpen1 && !isCaptured1) {
+                captureButton1.disabled = true;
+                deleteButton1.disabled = false;
+                authButton.disabled = false;
+                isCaptured1 = true;
+                fetch('/analyse_shot')
+                .then(response => {
+                    if (response.ok) {
+                        return response.text();
+                    } else {
+                        throw new Error('Failed to analyse image.');
+                    }
+                })
+                .then(message => {
+                    console.log(message);
+                    openWebcam();
+                })
+                .catch(error => {
+                    console.error('Error analysing image:', error);
+                });
+            }
+        }
+
+
+        function resetShot() {
+            if (isWebcamOpen1 && isCaptured1) {
+                captureButton1.disabled = false;
+                deleteButton1.disabled = true;
+                authButton.disabled = true;
+                isCaptured1 = false;
+            fetch('/reset')
+                .then(response => {
+                    if (response.ok) {
+                        return response.text();
+                    } else {
+                        throw new Error('Failed to reset image.');
+                    }
+                })
+                .then(message => {
+                    console.log(message);
+                    openWebcam();
+                })
+                .catch(error => {
+                    console.error('Error resetting image:', error);
+                });
+        }
+    }
+    </script>
+</body>
+</html>

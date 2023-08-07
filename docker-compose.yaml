@@ -1,0 +1,26 @@
+services:
+  web:
+    image: nginx:latest
+    ports:
+      - "80:80"
+    volumes:
+      - ./nginx/conf.d/default.conf:/etc/nginx/conf.d/default.conf
+  
+  app:
+    build:
+        dockerfile: ./flask/Dockerfile
+    volumes:
+      - ./flask:/flask
+  db:
+      image: mysql:latest
+      volumes: 
+          - mysqldata:/var/lib/mysql
+      ports:
+          - "3306:3306"
+      restart: unless-stopped
+      environment:
+        MYSQL_ALLOW_EMPTY_PASSWORD: "yes"
+        MYSQL_DATABASE: face_recognition
+        
+volumes:
+  mysqldata:

@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Dashboard</title>
+    <style>
+        img {
+            max-width: 500px;
+            max-height: 500px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Welcome to the Dashboard, {{ username }}!</h1>
+    <div>
+        <img src="data:image/jpeg;base64,{{ face_image }}" alt="User Face Image">
+    </div>
+
+    <form action="/logout" method="post">
+        <input type="submit" value="Logout">
+    </form>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            // Add any JavaScript code or AJAX requests here
+        });
+    </script>
+</body>
+</html>
